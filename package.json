@@ -1,0 +1,32 @@
+{
+  "name": "zeew-canvas",
+  "version": "1.0.0",
+  "description": "Un módulo de manipulación de imágenes",
+  "main": "src/Card.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zeewdev/zeew-canvas.git"
+  },
+  "dependencies": {
+    "canvas" : "^2.9.0",
+    "font-list" : "^1.4.5",
+    "is-image-url" : "1.1.8"
+  },
+  "keywords": [
+    "images",
+    "zeew",
+    "zeew api",
+    "zeewapi",
+    "api",
+    "async"
+  ],
+  "author": "167#0353",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zeewdev/zeew-canvas/issues"
+  },
+  "homepage": "https://github.com/zeewdev/zeew-canvas#readme"
+}
