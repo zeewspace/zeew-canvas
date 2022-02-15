@@ -75,6 +75,7 @@ class Card {
     this.ctx.save()
     if (opts && typeof opts !== 'object') throw new ZeewError(`El filtro debe ser un objecto`)
     if (!file && opts?.solidColor) {
+      console.log(opts.solidColor);
       if (!checkColor.test(opts?.solidColor)) throw new ZeewError(`El color del fondo debe de ser en hexadecimal`)
 
       this.ctx.fillStyle = opts?.solidColor
@@ -106,9 +107,9 @@ class Card {
 
   /**
    *
-   * @param {*} file - La ruta de la imagen o la url de la imagen
-   * @param {*} x - La posición X donde quieras colocar la imagen
-   * @param {*} y - La posición Y donde quieras colocar la imagen
+   * @param {String} file - La ruta de la imagen o la url de la imagen
+   * @param {Number} x - La posición X donde quieras colocar la imagen
+   * @param {Number} y - La posición Y donde quieras colocar la imagen
    * @param {{width: Number, height: Number, filter: { rotate: Number } }} opts - Opciones para la imagen
    */
   async addImage(file, x, y, opts = {filter: null, width: null, height: null}) {
