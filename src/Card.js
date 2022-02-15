@@ -1,4 +1,4 @@
-//requires
+//@ts-check
 const Canvas = require('canvas');
 const fonts = require('font-list');
 const path = require('path');
@@ -36,7 +36,7 @@ class Card {
 * @param {string} args - El texto a añadir
 * @param {number} x - La posición X donde quieras colocar el texto
 * @param {number} y - La posición Y donde quieras colocar el texto
-* @param {{size: Numer, color: String, rotate: Number,font: String }} [opts] - Opciones para el texto
+* @param {{size: Number, color: String, rotate: Number,font: String }} [opts] - Opciones para el texto
 */
   addText(args, x, y, opts = {size: 20, color: '#000000', rotate: 0, font: 'Arial'}) {
     this.ctx.save()
@@ -70,7 +70,7 @@ class Card {
    * @param {{solidColor: String, rotate: Number }} opts - Opciones para la imagen
    * @returns 
    */
-  async setBackground(file, opts = {filter: null}) {
+  async setBackground(file, opts) {
     this.ctx.save()
     if (opts && typeof opts !== 'object') throw new ZeewError(`El filtro debe ser un objecto, usa la función filterImage o deja vacia esta opción`)
     if (!file && opts?.solidColor) {
@@ -115,23 +115,23 @@ class Card {
     if (!file) throw new ZeewError(`Debes de añadir una ruta o enlace`)
     if (isImageUrl(file) == false) throw new ZeewError(`El enlace o ruta proporcionado no es una imagen`)
     if (x == null || y == null) throw new ZeewError(`Falta por añadir un valor: ${!x ? 'X' : 'Y'}`)
-    if (width && typeof width !== 'number' || height && typeof height !== 'number') throw new ZeewError(`El ancho y alto de la imagen deben ser números`)
+    if (opts.width && typeof opts.width !== 'number' || opts.height && typeof opts.height !== 'number') throw new ZeewError(`El ancho y alto de la imagen deben ser números`)
 
     const image = await Canvas.loadImage(file)
-    width = width ? width : image.width > this.canvas.width/2 ? image.width/2.5 : image.width
-    height = height ? height : image.height > this.canvas.height/2 ? image.height/2.5 : image.heightç
+    opts.width = opts.width ? opts.width : image.width > this.canvas.width/2 ? image.width/2.5 : image.width
+    opts.height = opts.height ? opts.height : image.height > this.canvas.height/2 ? image.height/2.5 : image.height
 
     if (opts.filter && typeof opts.filter !== 'object') throw new ZeewError(`El filtro debe ser un objecto, usa la función filterImage o deja vacia esta opción`)
     //filters
     if (typeof opts.filter?.rotate == 'number') {
       if (opts.filter?.rotate < 0 || opts.filter?.rotate> 360) throw new ZeewError(`La rotación se mide en grados, no puede ser ni menor a 0 grados ni mayor a 360 grados.`)
 
-      this.ctx.translate(x+0.5*width, y+0.5*height)
+      this.ctx.translate(x+0.5*opts.width, y+0.5*opts.height)
       this.ctx.rotate(Math.PI/180*opts.filter?.rotate)
-      this.ctx.translate(-(x+0.5*width), -(y+0.5*height))
+      this.ctx.translate(-(x+0.5*opts.width), -(y+0.5*opts.height))
     }
 
-    await this.ctx.drawImage(image, x, y, width, height)
+    await this.ctx.drawImage(image, x, y, opts.width, opts.height)
     this.ctx.restore()
   }
 
