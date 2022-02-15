@@ -74,10 +74,10 @@ class Card {
   async setBackground(file, opts = {filter: null}) {
     this.ctx.save()
     if (opts && typeof opts !== 'object') throw new ZeewError(`El filtro debe ser un objecto`)
-    if (!file && opts?.solidColor) {
-      if (!checkColor.test(opts?.solidColor)) throw new ZeewError(`El color del fondo debe de ser en hexadecimal`)
+    if (!file && opts.filter?.solidColor) {
+      if (!checkColor.test(opts.filter?.solidColor)) throw new ZeewError(`El color del fondo debe de ser en hexadecimal`)
 
-      this.ctx.fillStyle = opts?.solidColor
+      this.ctx.fillStyle = opts.filter?.solidColor
       this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
       this.ctx.restore()
       return this.background = true
@@ -89,11 +89,11 @@ class Card {
     file = checkUrl.test(file) == true ? file : path.resolve(file)
 
     //filters
-    if (typeof opts?.rotate == 'number') {
-      if (opts?.rotate < 0 || opts?.rotate > 360) throw new ZeewError(`La rotación se mide en grados, no puede ser ni menor a 0 grados ni mayor a 360 grados.`)
+    if (typeof opts.filter?.rotate == 'number') {
+      if (opts.filter?.rotate < 0 || opts.filter?.rotate > 360) throw new ZeewError(`La rotación se mide en grados, no puede ser ni menor a 0 grados ni mayor a 360 grados.`)
 
       this.ctx.translate(0.5*this.canvas.width, 0.5*this.canvas.height)
-      this.ctx.rotate(Math.PI/180*opts?.rotate)
+      this.ctx.rotate(Math.PI/180*opts.filter?.rotate)
       this.ctx.translate(-(0.5*this.canvas.width), -(0.5*this.canvas.height))
     }
 
