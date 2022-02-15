@@ -69,6 +69,7 @@ class Card {
    * @param {string} file - La ruta de la imagen o la url de la imagen
    * @param {{solidColor: String, rotate: Number }} opts - Opciones para la imagen
    * @returns
+
    */
   async setBackground(file, opts = {filter: null}) {
     this.ctx.save()
@@ -141,4 +142,4 @@ class Card {
 }
 
 module.exports = Card
-//De 167 para Zeew ️️️️❤️
+//De 167 para Zeew ❤️
