@@ -50,7 +50,7 @@ let filter = {}
 Agrega un fondo siendo una imagen o un color sólido 🥴
 |Propiedades||
 |---------|:---:
-|Archivo/URL/Color| Añade un color hexadecimal, una URL o color solido como fondo. Está entre llaves: `{imagen: URL/PATH} || {color: '#ffffff'}`|
+|Archivo/URL/Color| Añade un color hexadecimal, una URL o color solido como fondo. Está entre llaves: `{imagen: URL/PATH} - {color: '#ffffff'}`|
 |filter|Añade un filtro. Esta propiedad está dentro de las opciones opcionales. Está entre llaves: `{filter: filtros}`|
 
 Ejemplo
