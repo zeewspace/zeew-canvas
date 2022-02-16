@@ -15,7 +15,7 @@ let filter = {}//los filtros que pongamos a las imágenes deben de ir dentro de 
 
 //Recuerda que va por capas, asi que no tapas una capa con otra si no es tu intención
 
-await myImage.setBackground('./path/to/image.jpg', {filter: filter})//añadimos un fondo y añadimos filtros (sin filtros puesto que no agregamos filtros dentro del objeto)
+await myImage.setBackground({imagen: './path/to/image.jpg', filter: filter})//añadimos un fondo y añadimos filtros (sin filtros puesto que no agregamos filtros dentro del objeto)
 
 await myImage.addImage('https.example.com/picture.jpg', 125, 125)//colocamos la imágen en una posición
 
@@ -50,21 +50,20 @@ let filter = {}
 Agrega un fondo siendo una imagen o un color sólido 🥴
 |Propiedades||
 |---------|:---:
-|Archivo/URL/Color| Añade un color hexadecimal, una URL o color solido como fondo (los colores sólidos son puestos dentro de la propiedad filter como **solidColor**)|
+|Archivo/URL/Color| Añade un color hexadecimal, una URL o color solido como fondo. Está entre llaves: `{imagen: URL/PATH} || {color: '#ffffff'}`|
 |filter|Añade un filtro. Esta propiedad está dentro de las opciones opcionales. Está entre llaves: `{filter: filtros}`|
 
 Ejemplo
 ```js
 //color
-filter.solidColor = '#0000FF'
-await image.setBackground('', {filter: filter})
+await image.setBackground({color: '#0000FF', filter: filter})
 
 //path
 filter = {rotate: 360}
-await image.setBackground('archive.png', {filter: filter})
+await image.setBackground({imagen: 'archive.png', filter: filter})
 
 //url
-await image.setBackground('https://example.com/picture.png')
+await image.setBackground({imagen: 'https://example.com/picture.png'})
 ```
 
 ### .addImage()
@@ -114,7 +113,6 @@ Los filtros son una propiedad (`{filter}`) que está solamente disponible en `<i
 |Propiedades||
 |-|-|
 |rotate (deg)|Gira la imagen en grados
-|solidColor (hexadecimal)| Selecciona un color sólido. Esta opción solo está disponible en el fondo (`<img>.setBackground()`)
 
 ### Ejemplo simple:
 ```js
