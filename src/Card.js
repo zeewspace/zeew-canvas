@@ -83,16 +83,11 @@ class Card {
    * @param {string} args - El texto a añadir
    * @param {number} x - La posición X donde quieras colocar el texto
    * @param {number} y - La posición Y donde quieras colocar el texto
-   * @param {{size: Number, color: String, rotate: Number,font: String }} [opts] - Opciones para el texto
+   * @param {{size: Number, color: String, rotate: Number, font: String, linea: {widthLimit: 10, height: 20} }} [opts] - Opciones para el texto
    */
-  addText(
-    args,
-    x,
-    y,
-    opts = { size: 20, color: "#000000", rotate: 0, font: "Arial" }
-  ) {
+  addText(args, x, y, opts) {
+    let { size = 20, color = "#000000", rotate = 0, font = "Arial" } = opts;
     this.ctx.save();
-    let { size, color, rotate, font } = opts;
     if (x == null || y == null)
       throw new ZeewError(`Falta el siguiente valor: ${!x ? "X" : "Y"}`);
     if (opts.font && typeof opts.font !== "string")
@@ -122,6 +117,35 @@ class Card {
       this.ctx.translate(x + 0.5 * size, y + 0.5 * opts.size);
       this.ctx.rotate((Math.PI / 180) * opts.rotate);
       this.ctx.translate(-(x + 0.5 * opts.size), -(y + 0.5 * opts.size));
+    }
+
+    if (opts?.linea) {
+      if (opts.linea.widthLimit && typeof opts.linea.widthLimit !== "number")
+        throw new ZeewError(`El límite de lineas debe de ser un número`);
+      if (opts.linea.height && typeof opts.linea.height !== "number")
+        throw new ZeewError(`La altura de linea debe de ser un número`);
+      if (opts.linea.widthLimit && isNaN(opts.linea.widthLimit))
+        throw new ZeewError(`El límite de lineas tiene que ser un número.`);
+      if (opts.linea.height && isNaN(opts.linea.height))
+        throw new ZeewError(`La altura de linea tiene que ser un número.`);
+
+      let palabrasRy = args.split(" ");
+      let lineaDeTexto = "";
+      for (let i = 0; i < palabrasRy.length; i++) {
+        let testTexto = lineaDeTexto + palabrasRy[i] + " ";
+        let textWidth = this.ctx.measureText(testTexto).width;
+        if (textWidth > opts.linea.widthLimit && i > 0) {
+          this.ctx.fillText(lineaDeTexto, x, y);
+          lineaDeTexto = palabrasRy[i] + " ";
+
+          y += opts.linea.height;
+        } else {
+          lineaDeTexto = testTexto;
+        }
+      }
+      this.ctx.fillText(lineaDeTexto, x, y);
+      this.ctx.restore();
+      return;
     }
 
     this.ctx.fillText(args, x, y);
@@ -176,7 +200,13 @@ class Card {
     // cicle
     if (opts?.circle) {
       this.ctx.beginPath();
-      this.ctx.arc(x + 0.5 * opts.width, y + 0.5 * opts.height, 0.5 * opts.width, 0, 2 * Math.PI);
+      this.ctx.arc(
+        x + 0.5 * opts.width,
+        y + 0.5 * opts.height,
+        0.5 * opts.width,
+        0,
+        2 * Math.PI
+      );
       this.ctx.clip();
     }
 
