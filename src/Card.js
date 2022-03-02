@@ -133,7 +133,7 @@ class Card {
    * @param {String} file - La ruta de la imagen o la url de la imagen
    * @param {Number} x - La posición X donde quieras colocar la imagen
    * @param {Number} y - La posición Y donde quieras colocar la imagen
-   * @param {{width: Number, height: Number, filter: { rotate: Number } }} opts - Opciones para la imagen
+   * @param {{width: Number, height: Number, filter: { rotate: Number, circle: Boolean } }} opts - Opciones para la imagen
    */
   async addImage(file, x, y, opts) {
     this.ctx.save();
@@ -173,10 +173,17 @@ class Card {
       this.ctx.rotate((Math.PI / 180) * opts.filter?.rotate);
       this.ctx.translate(-(x + 0.5 * opts.width), -(y + 0.5 * opts.height));
     }
+    // cicle
+    if (opts.filter?.circle) {
+      this.ctx.beginPath();
+      this.ctx.arc(x + 0.5 * opts.width, y + 0.5 * opts.height, 0.5 * opts.width, 0, 2 * Math.PI);
+      this.ctx.clip();
+    }
 
     await this.ctx.drawImage(image, x, y, opts.width, opts.height);
     this.ctx.restore();
   }
+  // circle
 
   getImage() {
     return this.canvas.toBuffer();
