@@ -1,4 +1,4 @@
-class ZeewError extends Error {
+class ZeewErro extends Error {
   constructor(error) {
     super()
 
@@ -7,4 +7,4 @@ class ZeewError extends Error {
   }
 }
 
-module.exports = ZeewError
+module.exports = ZeewErro
