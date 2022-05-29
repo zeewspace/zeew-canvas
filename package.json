@@ -2,8 +2,8 @@
     "name": "zeew-canvas",
     "version": "1.1.0",
     "description": "Un módulo de manipulación de imágenes",
-    "types": "typings/index.d",
-    "main": "main",
+    "types": "typings/index.d.ts",
+    "main": "main.js",
     "scripts": {
       "tsc": "tsc main.ts"
     },
