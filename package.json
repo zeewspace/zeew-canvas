@@ -2,12 +2,10 @@
     "name": "zeew-canvas",
     "version": "1.1.0",
     "description": "Un módulo de manipulación de imágenes",
-    "types": "build/src/@types/index.d",
-    "main": "build/src/ZeewCanvas",
+    "types": "typings/index.d",
+    "main": "main",
     "scripts": {
-      "test-js": "nodemon test/loadImage.js",
-      "test-ts": "nodemon test/loadImage.ts",
-      "tsc": "tsc src/ZeewCanvas.ts"
+      "tsc": "tsc main.ts"
     },
     "repository": {
       "type": "git",
@@ -40,7 +38,6 @@
     },
     "binary": {
       "module_name": "zeew-canvas",
-      "module_path": "build/src",
       "remote_path": "v{version}"
     }
   }

@@ -3,10 +3,9 @@
     "require": ["tsconfig-paths/register"]
   },
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es5",
-    "sourceMap": true,
-    "lib": ["es2020", "esnext.asynciterable"],
     "outDir": "build",
-  },
+    "module": "commonjs",
+    "target": "es6",
+    "sourceMap": true,
+  }
 }
