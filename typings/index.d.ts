@@ -39,13 +39,13 @@ export class ZeewCanvas {
     private ctx: CanvasRenderingContext2D;
     constructor(width: number, height: number) 
 
-    public registerFont(path: string, fontFace: { family: string, weight?: string, style?: string}): this;
+    public registerFont(path: string, fontFace: { family: string, weight?: string, style?: string}): void;
 
-    public setBackground(opts: BACKGROUNDOPTS) : Promise<this>;
+    public setBackground(opts: BACKGROUNDOPTS) : Promise<void>;
 
-    public addText(text: string, x: number, y: number, opts: TEXTOPTS): this;
+    public addText(text: string, x: number, y: number, opts: TEXTOPTS): void;
 
-    public addImage(path: string, x: number, y: number, width?: number, height?: number, opts?: IMAGEOPTS): this;
+    public addImage(path: string, x: number, y: number, width?: number, height?: number, opts?: IMAGEOPTS): Promise<void>;
 
     public buildImage(): Buffer;
 
