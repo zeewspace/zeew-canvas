@@ -30,7 +30,7 @@ export class ZeewCanvas {
      */
     public registerFont(path: string, fontFace: { family: string, weight?: string, style?: string}) {
         registerFont(path, fontFace);
-        return this;
+        return;
     }
 
     /**
@@ -51,7 +51,7 @@ export class ZeewCanvas {
         if(opts && typeof opts !== "object")
             throw new ZeewCanvasError("Las opciones del fondo deben ser declarados en un objeto");
         
-        let radial = opts.radial;
+        let radial = opts?.radial;
         if(opts.radial) {
             if(typeof opts.radial === "number") radial = { tl: opts.radial, tr: opts.radial, br: opts.radial, bl: opts.radial };
             else if(typeof opts.radial === "object") {
@@ -169,7 +169,7 @@ export class ZeewCanvas {
         this.ctx.font = `${opts.size}px ${opts.font ?? "arial"}`;
         this.ctx.fillStyle = `${opts.color}`;
 
-        if (opts.rotate) {
+        if (opts?.rotate) {
             if (opts.rotate < 0 || opts.rotate > 360)
                 throw new ZeewCanvasError( `La rotación se mide en grados, no puede ser ni menor a 0 grados ni mayor a 360 grados.`);
 
@@ -196,7 +196,7 @@ export class ZeewCanvas {
                 this.ctx.lineWidth = opts.stroke.width ?? 5;
                 jumpStroke(this.ctx, text, x, y, opts.linea.widthLimit, opts.linea.height, opts.maxWidth? opts.maxWidth : undefined);
             }
-            if (opts.shadow) {
+            if (opts?.shadow) {
                 if (opts.shadow.color && typeof opts.shadow.color !== "string") 
                     throw new ZeewCanvasError(`El color de la sombra debe de ser una string`);
                 if (opts.shadow.blur && typeof opts.shadow.blur !== "number") 
@@ -248,8 +248,8 @@ export class ZeewCanvas {
         circle?: boolean,
         rotate?: number,
         opacity?: number,
-        horizontal: boolean,
-        vertical: boolean,
+        horizontal?: boolean,
+        vertical?: boolean,
         shadow?: { color: string, blur: number, offsetX: number, offsetY: number },
         stroke?: { color: string, width: number }
     }) {
@@ -344,8 +344,8 @@ export class ZeewCanvas {
 
         if(opts?.radial && opts?.circle) 
             throw new ZeewCanvasError(`No puede haber un valor radial y un valor circle`);
-        let radialImg = opts.radial;
         if(opts?.radial) {
+           let radialImg = opts.radial;
             if(typeof opts.radial === "number") radialImg = { tl: opts.radial, tr: opts.radial, br: opts.radial, bl: opts.radial };
             else if(typeof opts.radial === "object") {
                 if(typeof opts.radial.tl !== "number" || 
@@ -360,26 +360,32 @@ export class ZeewCanvas {
             fillRectangle(this.ctx, x, y, width, height, radialImg, true, hayStroke);
             this.ctx.clip();
             this.ctx.drawImage(img, 
-                opts.horizontal? -this.canvas.width: 0, 
-                opts.vertical? -this.canvas.height: 0,
+                opts.horizontal? -this.canvas.width: x, 
+                opts.vertical? -this.canvas.height: y,
                 this.canvas.width, this.canvas.height
             );
             this.ctx.restore();
             return this;
         } 
-        if(opts.circle) {
+        if(opts?.circle) {
             this.ctx.beginPath();
             this.ctx.arc(x + 0.5 * width, y + 0.5 * height, 0.5 * width, 0, 2 * Math.PI);
             this.ctx.clip();
             this.ctx.drawImage(img,
-                opts.horizontal? -this.canvas.width: 0,
-                opts.vertical? -this.canvas.height: 0,
+                opts.horizontal? -this.canvas.width: x + 0.5 * width,
+                opts.vertical? -this.canvas.height: y + 0.5 * height,
                 this.canvas.width, this.canvas.height
             );
+            if(hayStroke) {
+                this.ctx.arc(x + 0.5 * width, y + 0.5 * height, 0.5 * width, 0, 2 * Math.PI);
+                this.ctx.stroke();
+            }
             this.ctx.restore();
             return this;
         }
 
+        fillRectangle(this.ctx, x, y, width, height, 0, true, hayStroke);
+        this.ctx.clip();
         this.ctx.drawImage(img, x, y, width, height);
         this.ctx.restore();
         return this;

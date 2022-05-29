@@ -23,6 +23,17 @@ interface TEXTOPTS {
     shadow?: { color: string, blur?: number, offsetX?: number, offsetY?: number }, 
     linea?: { widthLimit: number, height: number }
 }
+
+interface IMAGEOPTS {
+    radial?: number | { tl: number, tr: number, br: number, bl: number },
+    circle?: boolean,
+    rotate?: number,
+    opacity?: number,
+    horizontal?: boolean,
+    vertical?: boolean,
+    shadow?: { color: string, blur: number, offsetX: number, offsetY: number },
+    stroke?: { color: string, width: number }
+}
 export class ZeewCanvas {
     private canvas: Canvas;
     private ctx: CanvasRenderingContext2D;
@@ -33,6 +44,8 @@ export class ZeewCanvas {
     public setBackground(opts: BACKGROUNDOPTS) : Promise<this>;
 
     public addText(text: string, x: number, y: number, opts: TEXTOPTS): this;
+
+    public addImage(path: string, x: number, y: number, width?: number, height?: number, opts?: IMAGEOPTS): this;
 
     public buildImage(): Buffer;
 
