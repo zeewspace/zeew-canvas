@@ -41,9 +41,8 @@ var CanvasUtils_1 = require("./Resources/CanvasUtils");
 var ZeewCanvasError_1 = require("./Resources/ZeewCanvasError");
 var canvas_1 = require("canvas");
 var checkColor = /^#([0-9A-F]{3}){1,2}$/i;
-/**
- * @Class Maneja la API de Canvas de una manera más sencilla
- */
+/** ZeewCanvas - [ Un módulo de manipulación de imágenes con Canvas ] -
+*/
 var ZeewCanvas = /** @class */ (function () {
     /**
      *
@@ -66,7 +65,7 @@ var ZeewCanvas = /** @class */ (function () {
         (0, canvas_1.registerFont)(path, fontFace);
         return;
     };
-    /**
+    /** Establece un color o imagen en tu fondo
      * @param {{
      *   image?: { path: string, opacity?: number, vertical?: boolean, horizontal?: boolean },
      *   color?: string | { x0: number, y0: number, x1: number, y1: number, opacity: number, data: { hex: string, position: number }[] },
@@ -156,21 +155,22 @@ var ZeewCanvas = /** @class */ (function () {
             });
         });
     };
-    /**
+    /** Añade un texto en tu lienzo
      * @param {string} text El texto de su lienzo.
      * @param {number} x La posición X donde quieras colocar el texto.
      * @param {number} y La posición Y donde quieras colocar el texto.
      * @param {{
-     * size?: number, color?: string, rotate?: number, font?: string, align?: string,
+     * size?: number, color?: string, rotate?: number, font?: string, align?: string, maxWidth?: number
      * stroke?: { color: string, width: number },
      * shadow?: { color: string, blur?: number, offsetX?: number, offsetY?: number },
      * linea?: { widthLimit: number, height: number },
-     * maxWidth?: number }} opts Opciones para el texto.
+     * registerFont: {
+     *  path: string,
+     *  fontFace: { family: string, weight?: string, style?: string}
+     *  }}} [opts]? Opciones para el texto.
     */
     ZeewCanvas.prototype.addText = function (text, x, y, opts) {
         var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q;
-        var _r = opts.size, size = _r === void 0 ? 60 : _r;
-        this.ctx.save();
         if (x == null || y == null)
             throw new ZeewCanvasError_1["default"]("Falta el siguiente valor: ".concat(!x ? "X" : "Y"));
         if (opts.font && typeof opts.font !== "string")
@@ -185,6 +185,8 @@ var ZeewCanvas = /** @class */ (function () {
             throw new ZeewCanvasError_1["default"]("El color de la fuente debe de ser un color hexadecimal");
         if (opts.rotate && isNaN(opts.rotate))
             throw new ZeewCanvasError_1["default"]("El valor de la rotaci\u00F3n tiene que ser un n\u00FAmero.");
+        var _r = opts.size, size = _r === void 0 ? 60 : _r;
+        this.ctx.save();
         this.ctx.font = "".concat(opts.size, "px ").concat((_a = opts.font) !== null && _a !== void 0 ? _a : "arial");
         this.ctx.fillStyle = "".concat(opts.color);
         if (opts === null || opts === void 0 ? void 0 : opts.rotate) {
@@ -255,6 +257,23 @@ var ZeewCanvas = /** @class */ (function () {
         this.ctx.restore();
         return this;
     };
+    /**
+     * Añade una imagen a tu lienzo.
+     * @param {string} path Ubicación de tu imagen
+     * @param {number} x Posición eje X de tu imagen
+     * @param {number} y Posición eje Y de tu imagen
+     * @param {number} width Anchura de tu imagen
+     * @param {number} height Altura de tu imagen
+     * @param {{
+     * radial?: number | { tl: number, tr: number, br: number, bl: number },
+     *  circle?: boolean,
+     *  rotate?: number,
+     *  opacity?: number,
+     *  shadow?: { color: string, blur: number, offsetX: number, offsetY: number },
+     *  stroke?: { color: string, width: number }
+    *}} [opts]? Opciones de tu imagen
+     * @returns
+     */
     ZeewCanvas.prototype.addImage = function (path, x, y, width, height, opts) {
         var _a, _b, _c, _d, _e, _f;
         return __awaiter(this, void 0, void 0, function () {
@@ -282,10 +301,6 @@ var ZeewCanvas = /** @class */ (function () {
                             throw new ZeewCanvasError_1["default"]("El valor rotate debe ser un n\u00FAmero");
                         if ((opts === null || opts === void 0 ? void 0 : opts.opacity) && typeof opts.opacity !== "number")
                             throw new ZeewCanvasError_1["default"]("El valor opacity debe ser un n\u00FAmero");
-                        if ((opts === null || opts === void 0 ? void 0 : opts.horizontal) && typeof opts.horizontal !== "boolean")
-                            throw new ZeewCanvasError_1["default"]("El valor horizontal debe ser un boolean");
-                        if ((opts === null || opts === void 0 ? void 0 : opts.vertical) && typeof opts.vertical !== "boolean")
-                            throw new ZeewCanvasError_1["default"]("El valor vertical debe ser un boolean");
                         if ((opts === null || opts === void 0 ? void 0 : opts.shadow) && typeof opts.shadow !== "object")
                             throw new ZeewCanvasError_1["default"]("El valor shadow debe ser un objeto");
                         if ((opts === null || opts === void 0 ? void 0 : opts.stroke) && typeof opts.stroke !== "object")
@@ -303,16 +318,6 @@ var ZeewCanvas = /** @class */ (function () {
                         }
                         if (opts === null || opts === void 0 ? void 0 : opts.opacity) {
                             this.ctx.globalAlpha = opts.opacity;
-                        }
-                        if (opts === null || opts === void 0 ? void 0 : opts.vertical) {
-                            if (typeof opts.vertical !== "boolean")
-                                throw new ZeewCanvasError_1["default"]("El valor de la imagen para vertical, tiene que ser un valor boolean");
-                            this.ctx.scale(1, -1);
-                        }
-                        if (opts === null || opts === void 0 ? void 0 : opts.horizontal) {
-                            if (typeof opts.horizontal !== "boolean")
-                                throw new ZeewCanvasError_1["default"]("El valor de la imagen para horizontal, tiene que ser un valor boolean");
-                            this.ctx.scale(-1, 1);
                         }
                         if (opts === null || opts === void 0 ? void 0 : opts.shadow) {
                             if (opts.shadow.color && typeof opts.shadow.color !== "string")
@@ -360,7 +365,7 @@ var ZeewCanvas = /** @class */ (function () {
                                 throw new ZeewCanvasError_1["default"]("La opci\u00F3n radial debe ser un n\u00FAmero o un objeto");
                             (0, CanvasUtils_1.fillRectangle)(this.ctx, x, y, width, height, radialImg, false, hayStroke);
                             this.ctx.clip();
-                            this.ctx.drawImage(img, opts.horizontal ? -width : x, opts.vertical ? -height : y, width, height);
+                            this.ctx.drawImage(img, x, y, width, height);
                             this.ctx.restore();
                             return [2 /*return*/, this];
                         }
@@ -368,7 +373,7 @@ var ZeewCanvas = /** @class */ (function () {
                             this.ctx.beginPath();
                             this.ctx.arc(x + 0.5 * width, y + 0.5 * height, 0.5 * width, 0, 2 * Math.PI);
                             this.ctx.clip();
-                            this.ctx.drawImage(img, opts.horizontal ? -width : x, opts.vertical ? -height : y, width, height);
+                            this.ctx.drawImage(img, x, y, width, height);
                             if (hayStroke) {
                                 this.ctx.arc(x + 0.5 * width, y + 0.5 * height, 0.5 * width, 0, 2 * Math.PI);
                                 this.ctx.stroke();
@@ -376,7 +381,7 @@ var ZeewCanvas = /** @class */ (function () {
                             this.ctx.restore();
                             return [2 /*return*/, this];
                         }
-                        (0, CanvasUtils_1.fillRectangle)(this.ctx, x, y, width, height, 0, true, hayStroke);
+                        (0, CanvasUtils_1.fillRectangle)(this.ctx, x, y, width, height, 0, false, hayStroke);
                         this.ctx.clip();
                         this.ctx.drawImage(img, x, y, width, height);
                         this.ctx.restore();
@@ -384,6 +389,102 @@ var ZeewCanvas = /** @class */ (function () {
                 }
             });
         });
+    };
+    /**
+     *
+     * @param {number} x Posición eje X de tu rectángulo
+     * @param {number} y Posición eje Y de tu rectángulo
+     * @param {number} width Anchura del rectángulo
+     * @param {number} height Altura del rectángulo
+     * @param {{
+     *  color: | { x0: number, y0: number, x1: number, y1: number, opacity: number, data: { hex: string, position: number }[] },
+     *  rotate?: number,
+     *  opacity?: number,
+     *  shadow?: { color: string, blur?: number, offsetX?: number, offsetY?: number },
+     *  stroke?: { color: string, width?: number },
+     *  radial?: number | { tl: number, tr: number, br: number, bl: number }
+     *}} [opts]?
+    */
+    ZeewCanvas.prototype.fillRectangle = function (x, y, width, height, opts) {
+        var _a, _b, _c, _d, _e, _f;
+        if (!x || typeof x !== "number")
+            throw new ZeewCanvasError_1["default"]("La posici\u00F3n x debe ser obligatoria y debe ser un n\u00FAmero");
+        if (!y || typeof y !== "number")
+            throw new ZeewCanvasError_1["default"]("La posici\u00F3n y debe ser obligatoria y debe ser un n\u00FAmero");
+        if (!width || typeof width !== "number")
+            throw new ZeewCanvasError_1["default"]("El ancho de la imagen debe ser obligatorio y debe ser un n\u00FAmero");
+        if (!height || typeof height !== "number")
+            throw new ZeewCanvasError_1["default"]("El alto de la imagen debe ser obligatorio y debe ser un n\u00FAmero");
+        if ((opts === null || opts === void 0 ? void 0 : opts.radial) && typeof opts.radial !== "number" && typeof opts.radial !== "object")
+            throw new ZeewCanvasError_1["default"]("El valor radial debe ser un n\u00FAmero o un objeto");
+        if ((opts === null || opts === void 0 ? void 0 : opts.rotate) && typeof opts.rotate !== "number")
+            throw new ZeewCanvasError_1["default"]("El valor rotate debe ser un n\u00FAmero");
+        if ((opts === null || opts === void 0 ? void 0 : opts.opacity) && typeof opts.opacity !== "number")
+            throw new ZeewCanvasError_1["default"]("El valor opacity debe ser un n\u00FAmero");
+        if ((opts === null || opts === void 0 ? void 0 : opts.shadow) && typeof opts.shadow !== "object")
+            throw new ZeewCanvasError_1["default"]("El valor shadow debe ser un objeto");
+        if ((opts === null || opts === void 0 ? void 0 : opts.stroke) && typeof opts.stroke !== "object")
+            throw new ZeewCanvasError_1["default"]("El valor stroke debe ser un objeto");
+        if (opts === null || opts === void 0 ? void 0 : opts.shadow) {
+            this.ctx.shadowColor = (_a = opts.shadow.color) !== null && _a !== void 0 ? _a : "#000000";
+            this.ctx.shadowBlur = (_b = opts.shadow.blur) !== null && _b !== void 0 ? _b : 5;
+            this.ctx.shadowOffsetX = (_c = opts.shadow.offsetX) !== null && _c !== void 0 ? _c : 0;
+            this.ctx.shadowOffsetY = (_d = opts.shadow.offsetY) !== null && _d !== void 0 ? _d : 0;
+        }
+        if (opts === null || opts === void 0 ? void 0 : opts.stroke) {
+            this.ctx.strokeStyle = (_e = opts.stroke.color) !== null && _e !== void 0 ? _e : "#000000";
+            this.ctx.lineWidth = (_f = opts.stroke.width) !== null && _f !== void 0 ? _f : 1;
+        }
+        if (opts === null || opts === void 0 ? void 0 : opts.opacity)
+            this.ctx.globalAlpha = opts.opacity;
+        if (typeof (opts === null || opts === void 0 ? void 0 : opts.rotate) === "number") {
+            if (opts.rotate < 0 || opts.rotate > 360)
+                throw new ZeewCanvasError_1["default"]("La rotaci\u00F3n se mide en grados, no puede ser ni menor a 0 grados ni mayor a 360 grados.");
+            this.ctx.translate(x + 0.5 * width, y + 0.5 * height);
+            this.ctx.rotate((Math.PI / 180) * opts.rotate);
+            this.ctx.translate(-(x + 0.5 * width), -(y + 0.5 * height));
+        }
+        var radial = opts.radial;
+        if (opts === null || opts === void 0 ? void 0 : opts.radial) {
+            if (typeof opts.radial === "number")
+                radial = { tl: opts.radial, tr: opts.radial, br: opts.radial, bl: opts.radial };
+            else if (typeof opts.radial === "object") {
+                if (typeof opts.radial.tl !== "number" ||
+                    typeof opts.radial.tr !== "number" ||
+                    typeof opts.radial.br !== "number" ||
+                    typeof opts.radial.bl !== "number")
+                    throw new ZeewCanvasError_1["default"]("Una de las opciones del fondo radial no es un n\u00FAmero: tl = ".concat(opts.radial.tl, ", tr = ").concat(opts.radial.tr, ", br = ").concat(opts.radial.br, ", bl = ").concat(opts.radial.bl));
+                radial = opts.radial;
+            }
+            else
+                throw new ZeewCanvasError_1["default"]("La opci\u00F3n radial debe ser un n\u00FAmero o un objeto");
+        }
+        else
+            radial = 0;
+        if (opts === null || opts === void 0 ? void 0 : opts.color) {
+            if (typeof opts.color === "string") {
+                if (!checkColor.test(opts.color))
+                    throw new ZeewCanvasError_1["default"]("El color debe ser un string hexadecimal");
+                this.ctx.fillStyle = opts.color;
+            }
+            else if (typeof opts.color === "object") {
+                this.ctx.globalAlpha = opts && opts.color.opacity ? opts.color.opacity : 1;
+                if (typeof opts.color.x0 !== "number" || typeof opts.color.y0 !== "number" || typeof opts.color.x1 !== "number" || typeof opts.color.y1 !== "number")
+                    throw new ZeewCanvasError_1["default"]("Una de las opciones del fondo de color no es un n\u00FAmero: x0 = ".concat(opts.color.x0, ", y0 = ").concat(opts.color.y0, ", x1 = ").concat(opts.color.x1, ", y1 = ").concat(opts.color.y1));
+                var gradient = this.ctx.createLinearGradient(opts.color.x0, opts.color.y0, opts.color.x1, opts.color.y1);
+                for (var i = 0; i < opts.color.data.length; i++) {
+                    if (typeof opts.color.data[i] !== "object")
+                        throw new ZeewCanvasError_1["default"]("La opci\u00F3n de color debe ser un objeto: data[".concat(i, "] = ").concat(opts.color.data[i]));
+                    if (!checkColor.test(opts.color.data[i].hex))
+                        throw new ZeewCanvasError_1["default"]("El color debe ser un string hexadecimal: data[".concat(i, "].hex = ").concat(opts.color.data[i].hex));
+                    if (opts.color.data[i].position < 0 || opts.color.data[i].position > 1)
+                        throw new ZeewCanvasError_1["default"]("La posici\u00F3n del color debe ser un n\u00FAmero entre 0 y 1: data[".concat(i, "].position = ").concat(opts.color.data[i].position));
+                    gradient.addColorStop(opts.color.data[i].position, opts.color.data[i].hex);
+                }
+                this.ctx.fillStyle = gradient;
+            }
+        }
+        (0, CanvasUtils_1.fillRectangle)(this.ctx, x, y, width, height, radial, true, (opts === null || opts === void 0 ? void 0 : opts.stroke) ? true : false);
     };
     ZeewCanvas.prototype.buildImage = function () {
         return this.canvas.toBuffer();
