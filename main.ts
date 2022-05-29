@@ -357,12 +357,12 @@ export class ZeewCanvas {
                 radialImg = opts.radial;
             } else throw new ZeewCanvasError(`La opción radial debe ser un número o un objeto`);
 
-            fillRectangle(this.ctx, x, y, width, height, radialImg, true, hayStroke);
+            fillRectangle(this.ctx, x, y, width, height, radialImg, false, hayStroke);
             this.ctx.clip();
             this.ctx.drawImage(img, 
-                opts.horizontal? -this.canvas.width: x, 
-                opts.vertical? -this.canvas.height: y,
-                this.canvas.width, this.canvas.height
+                opts.horizontal? -width: x, 
+                opts.vertical? -height: y,
+                width, height
             );
             this.ctx.restore();
             return this;
@@ -372,9 +372,9 @@ export class ZeewCanvas {
             this.ctx.arc(x + 0.5 * width, y + 0.5 * height, 0.5 * width, 0, 2 * Math.PI);
             this.ctx.clip();
             this.ctx.drawImage(img,
-                opts.horizontal? -this.canvas.width: x + 0.5 * width,
-                opts.vertical? -this.canvas.height: y + 0.5 * height,
-                this.canvas.width, this.canvas.height
+                opts.horizontal? -width: x,
+                opts.vertical? -height: y,
+                width, height
             );
             if(hayStroke) {
                 this.ctx.arc(x + 0.5 * width, y + 0.5 * height, 0.5 * width, 0, 2 * Math.PI);

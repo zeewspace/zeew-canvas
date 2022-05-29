@@ -358,9 +358,9 @@ var ZeewCanvas = /** @class */ (function () {
                             }
                             else
                                 throw new ZeewCanvasError_1["default"]("La opci\u00F3n radial debe ser un n\u00FAmero o un objeto");
-                            (0, CanvasUtils_1.fillRectangle)(this.ctx, x, y, width, height, radialImg, true, hayStroke);
+                            (0, CanvasUtils_1.fillRectangle)(this.ctx, x, y, width, height, radialImg, false, hayStroke);
                             this.ctx.clip();
-                            this.ctx.drawImage(img, opts.horizontal ? -this.canvas.width : x, opts.vertical ? -this.canvas.height : y, this.canvas.width, this.canvas.height);
+                            this.ctx.drawImage(img, opts.horizontal ? -width : x, opts.vertical ? -height : y, width, height);
                             this.ctx.restore();
                             return [2 /*return*/, this];
                         }
@@ -368,7 +368,7 @@ var ZeewCanvas = /** @class */ (function () {
                             this.ctx.beginPath();
                             this.ctx.arc(x + 0.5 * width, y + 0.5 * height, 0.5 * width, 0, 2 * Math.PI);
                             this.ctx.clip();
-                            this.ctx.drawImage(img, opts.horizontal ? -this.canvas.width : x + 0.5 * width, opts.vertical ? -this.canvas.height : y + 0.5 * height, this.canvas.width, this.canvas.height);
+                            this.ctx.drawImage(img, opts.horizontal ? -width : x, opts.vertical ? -height : y, width, height);
                             if (hayStroke) {
                                 this.ctx.arc(x + 0.5 * width, y + 0.5 * height, 0.5 * width, 0, 2 * Math.PI);
                                 this.ctx.stroke();
