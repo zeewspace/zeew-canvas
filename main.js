@@ -64,7 +64,7 @@ var ZeewCanvas = /** @class */ (function () {
      */
     ZeewCanvas.prototype.registerFont = function (path, fontFace) {
         (0, canvas_1.registerFont)(path, fontFace);
-        return this;
+        return;
     };
     /**
      * @param {{
@@ -84,7 +84,7 @@ var ZeewCanvas = /** @class */ (function () {
                         this.ctx.save();
                         if (opts && typeof opts !== "object")
                             throw new ZeewCanvasError_1["default"]("Las opciones del fondo deben ser declarados en un objeto");
-                        radial = opts.radial;
+                        radial = opts === null || opts === void 0 ? void 0 : opts.radial;
                         if (opts.radial) {
                             if (typeof opts.radial === "number")
                                 radial = { tl: opts.radial, tr: opts.radial, br: opts.radial, bl: opts.radial };
@@ -187,7 +187,7 @@ var ZeewCanvas = /** @class */ (function () {
             throw new ZeewCanvasError_1["default"]("El valor de la rotaci\u00F3n tiene que ser un n\u00FAmero.");
         this.ctx.font = "".concat(opts.size, "px ").concat((_a = opts.font) !== null && _a !== void 0 ? _a : "arial");
         this.ctx.fillStyle = "".concat(opts.color);
-        if (opts.rotate) {
+        if (opts === null || opts === void 0 ? void 0 : opts.rotate) {
             if (opts.rotate < 0 || opts.rotate > 360)
                 throw new ZeewCanvasError_1["default"]("La rotaci\u00F3n se mide en grados, no puede ser ni menor a 0 grados ni mayor a 360 grados.");
             this.ctx.translate(x + 0.5 * size, y + 0.5 * opts.size);
@@ -211,7 +211,7 @@ var ZeewCanvas = /** @class */ (function () {
                 this.ctx.lineWidth = (_d = opts.stroke.width) !== null && _d !== void 0 ? _d : 5;
                 (0, CanvasUtils_1.jumpStroke)(this.ctx, text, x, y, opts.linea.widthLimit, opts.linea.height, opts.maxWidth ? opts.maxWidth : undefined);
             }
-            if (opts.shadow) {
+            if (opts === null || opts === void 0 ? void 0 : opts.shadow) {
                 if (opts.shadow.color && typeof opts.shadow.color !== "string")
                     throw new ZeewCanvasError_1["default"]("El color de la sombra debe de ser una string");
                 if (opts.shadow.blur && typeof opts.shadow.blur !== "number")
@@ -344,8 +344,8 @@ var ZeewCanvas = /** @class */ (function () {
                         }
                         if ((opts === null || opts === void 0 ? void 0 : opts.radial) && (opts === null || opts === void 0 ? void 0 : opts.circle))
                             throw new ZeewCanvasError_1["default"]("No puede haber un valor radial y un valor circle");
-                        radialImg = opts.radial;
                         if (opts === null || opts === void 0 ? void 0 : opts.radial) {
+                            radialImg = opts.radial;
                             if (typeof opts.radial === "number")
                                 radialImg = { tl: opts.radial, tr: opts.radial, br: opts.radial, bl: opts.radial };
                             else if (typeof opts.radial === "object") {
@@ -360,18 +360,24 @@ var ZeewCanvas = /** @class */ (function () {
                                 throw new ZeewCanvasError_1["default"]("La opci\u00F3n radial debe ser un n\u00FAmero o un objeto");
                             (0, CanvasUtils_1.fillRectangle)(this.ctx, x, y, width, height, radialImg, true, hayStroke);
                             this.ctx.clip();
-                            this.ctx.drawImage(img, opts.horizontal ? -this.canvas.width : 0, opts.vertical ? -this.canvas.height : 0, this.canvas.width, this.canvas.height);
+                            this.ctx.drawImage(img, opts.horizontal ? -this.canvas.width : x, opts.vertical ? -this.canvas.height : y, this.canvas.width, this.canvas.height);
                             this.ctx.restore();
                             return [2 /*return*/, this];
                         }
-                        if (opts.circle) {
+                        if (opts === null || opts === void 0 ? void 0 : opts.circle) {
                             this.ctx.beginPath();
                             this.ctx.arc(x + 0.5 * width, y + 0.5 * height, 0.5 * width, 0, 2 * Math.PI);
                             this.ctx.clip();
-                            this.ctx.drawImage(img, opts.horizontal ? -this.canvas.width : 0, opts.vertical ? -this.canvas.height : 0, this.canvas.width, this.canvas.height);
+                            this.ctx.drawImage(img, opts.horizontal ? -this.canvas.width : x + 0.5 * width, opts.vertical ? -this.canvas.height : y + 0.5 * height, this.canvas.width, this.canvas.height);
+                            if (hayStroke) {
+                                this.ctx.arc(x + 0.5 * width, y + 0.5 * height, 0.5 * width, 0, 2 * Math.PI);
+                                this.ctx.stroke();
+                            }
                             this.ctx.restore();
                             return [2 /*return*/, this];
                         }
+                        (0, CanvasUtils_1.fillRectangle)(this.ctx, x, y, width, height, 0, true, hayStroke);
+                        this.ctx.clip();
                         this.ctx.drawImage(img, x, y, width, height);
                         this.ctx.restore();
                         return [2 /*return*/, this];
