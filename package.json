@@ -2,6 +2,7 @@
     "name": "zeew-canvas",
     "version": "1.1.0",
     "description": "Un módulo de manipulación de imágenes",
+    "types": "build/src/@types/index.d",
     "main": "build/src/ZeewCanvas",
     "scripts": {
       "test-js": "nodemon test/loadImage.js",
